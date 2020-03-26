@@ -2,19 +2,23 @@ import React from 'react';
 import { Engine } from './Engine';
 import useInterval from './use-interval.hook';
 import Tiger from './Tiger';
+import { TreeContext } from './TreesContext';
 
 
 
 let Tigers = {
     tigerHp: 40,
     tigerPos: {
-        tiger1: null,
-        tiger2: null,
-        tiger3: null,
-        tiger4: null,
-        tiger5: null,
-
-
+        tiger1: { tigerIcon: null, randomLeft: 0, randomTop: 0 },
+        tiger2: { tigerIcon: null, randomLeft: 0, randomTop: 0 },
+        tiger3: { tigerIcon: null, randomLeft: 0, randomTop: 0 },
+        tiger4: { tigerIcon: null, randomLeft: 0, randomTop: 0 },
+        tiger5: { tigerIcon: null, randomLeft: 0, randomTop: 0 },
+        tiger6: { tigerIcon: null, randomLeft: 0, randomTop: 0 },
+        tiger7: { tigerIcon: null, randomLeft: 0, randomTop: 0 },
+        tiger8: { tigerIcon: null, randomLeft: 0, randomTop: 0 },
+        tiger9: { tigerIcon: null, randomLeft: 0, randomTop: 0 },
+        tiger10: { tigerIcon: null, randomLeft: 0, randomTop: 0 },
     }
 
 }
@@ -23,8 +27,8 @@ let Tigers = {
 const Enemy = () => {
 
 
-    const { SetCharacter, character, enemy, setEnemy } = React.useContext(Engine)
-
+    const { treePos, SetCharacter, character, enemy, setEnemy } = React.useContext(Engine)
+    const { treeState } = React.useContext(TreeContext)
 
 
 
@@ -35,96 +39,76 @@ const Enemy = () => {
     const [tigerProperties, settigerProperties] = React.useState({ ...Tigers })
     const [tigerAllower, settigerAllower] = React.useState(false);
     const [danger, setDanger] = React.useState(false);
-    const [offSet, setoffSet] = React.useState(64)
-
-
+    const [offSet, setoffSet] = React.useState(288)
 
     console.log(tigerProperties)
-
-
 
     let allTigers = Object.keys(tigerProperties.tigerPos);
 
     React.useEffect(() => {
         let tigerIcon = '🐅';
-        allTigers.forEach(tiger => {
-            let randomLeft = Math.round((Math.random() * (980) + 0) / 10) * 10;
-            let randomTop = Math.round((Math.random() * (650 - 1) + 1) / 10) * 10;
-            let tigerOn = true;
-            let tigerHp = 40;
-            let dangerZone = false;
-            tigerProperties.tigerPos[tiger] = { tigerIcon, randomLeft, randomTop, tigerOn, tigerHp, dangerZone }
-        })
-        settigerAllower(true)
 
-    }, []);
-    //array of list of movements. 
-
-    // let tigerSpriteRight = 288;
-    // let tigerSpriteLeft = 240;
-    // let maxTigerHop = 10;
-    // let animationIndex = 0;
-
-    // const TigerMovements = [
-    //     {
-    //         sprite: tigerSpriteRight,
-    //         moveAmount: maxTigerHop,
-    //     },
-    //     {
-    //         sprite: tigerSpriteRight,
-    //         moveAmount: maxTigerHop,
-    //     },
-    //     {
-    //         sprite: tigerSpriteRight,
-    //         moveAmount: maxTigerHop,
-    //     },
-    // ]
+        if (treeState.treePositions.length > 0) {
+            allTigers.forEach((tiger, index) => {
+                console.log(treeState)
+                let randomLeft = treeState.treePositions[index].x - 20
+                let randomTop = treeState.treePositions[index].y + 30
+                let tigerOn = true;
+                let tigerHp = 40;
+                let dangerZone = false;
+                tigerProperties.tigerPos[tiger] = { tigerIcon, randomLeft, randomTop, tigerOn, tigerHp, dangerZone }
+            })
+            settigerAllower(true)
+        }
 
 
-    console.log(maxMovement)
+    }, [treeState]);
+
+
+
     useInterval(() => {
         allTigers.forEach(tiger => {
             let tigerSpriteRight = 288;
             let tigerSpriteLeft = 240;
+            let tigerSpriteTop = 336
+            let tigerSpriteBottom = 192
             let maxTigerHop = 10;
-            if (maxMovement === 1) {
-                setmaxMovement(2)
-                tigerProperties.tigerPos[tiger].randomLeft += maxTigerHop * 2
-                setoffSet(tigerSpriteRight)
-            }
-            else if (maxMovement === 2) {
-                setmaxMovement(3)
-                tigerProperties.tigerPos[tiger].randomLeft += maxTigerHop
-                setoffSet(tigerSpriteRight)
-            }
-            else if (maxMovement === 3) {
-                setmaxMovement(4)
-                tigerProperties.tigerPos[tiger].randomLeft += maxTigerHop
-                setoffSet(tigerSpriteRight)
-            }
-            else if (maxMovement === 4) {
-                setmaxMovement(5)
 
+            //right movement.-------------------------------------------
+            if (maxMovement >= 1 && maxMovement <= 3) {
+                setmaxMovement(maxMovement + 1)
+                tigerProperties.tigerPos[tiger].randomLeft += maxTigerHop
+                setoffSet(tigerSpriteRight)
+            }
+
+            //top movement.-------------------------------------------
+            if (maxMovement >= 4 && maxMovement <= 7) {
+                setmaxMovement(maxMovement + 1)
+                tigerProperties.tigerPos[tiger].randomTop -= maxTigerHop
+                setoffSet(tigerSpriteTop)
+            }
+
+            // //left movement-------------------------------------------
+            if (maxMovement >= 8 && maxMovement <= 10) {
+                setmaxMovement(maxMovement + 1)
                 tigerProperties.tigerPos[tiger].randomLeft -= maxTigerHop
                 setoffSet(tigerSpriteLeft)
             }
-            else if (maxMovement === 5) {
-                setmaxMovement(6)
-                tigerProperties.tigerPos[tiger].randomLeft -= maxTigerHop
-                setoffSet(tigerSpriteLeft)
+            // //bottom mvoement -------------------------------------------
+
+            if (maxMovement >= 11 && maxMovement <= 14) {
+                setmaxMovement(maxMovement + 1)
+                tigerProperties.tigerPos[tiger].randomTop += maxTigerHop
+                setoffSet(tigerSpriteBottom)
             }
-            else if (maxMovement === 6) {
-                setmaxMovement(7)
-                tigerProperties.tigerPos[tiger].randomLeft -= maxTigerHop
-                setoffSet(tigerSpriteLeft)
-            }
-            else if (maxMovement === 7) {
+
+            if (maxMovement === 15) {
                 setmaxMovement(1)
-                tigerProperties.tigerPos[tiger].randomLeft -= maxTigerHop
-                setoffSet(tigerSpriteLeft)
             }
+
+
         });
-    }, 300);
+    }, 100);
 
 
 
@@ -158,6 +142,8 @@ const Enemy = () => {
                 }
 
                 if (tigerProperties.tigerPos[tiger].tigerHp === 0) {
+                    tigerProperties.tigerPos[tiger].randomLeft = 0;
+                    tigerProperties.tigerPos[tiger].randomTop = 0;
                     tigerProperties.tigerPos[tiger].tigerOn = false;
                 }
 

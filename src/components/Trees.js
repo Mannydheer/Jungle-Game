@@ -1,30 +1,34 @@
 import React from 'react';
 import { Engine } from './Engine';
 import EachTree from './EachTree';
+import { TreeContext } from './TreesContext';
 
 
 const Trees = ({ moveStampede, setpowerUp, power, character }) => {
 
     //Hooks
     const { setFireCollision, treePos, settreePos, } = React.useContext(Engine)
+    const { actions: { updatePositions } } = React.useContext(TreeContext)
 
     // const [treePos, settreePos] = React.useState({ ...TreeProperties })
     const [treeAllower, settreeAllower] = React.useState(false)
     let [count, setCount] = React.useState(0);
 
-
-
+    console.log(treePos)
     //Generate random trees
     React.useEffect(() => {
         let allTrees = Object.keys(treePos.treePositions);
         let palmTree = '🍌';
-        allTrees.forEach(tree => {
+        allTrees.forEach((tree, index) => {
             let randomLeft = Math.round((Math.random() * (980) + 0) / 10) * 10;
             let randomTop = Math.round((Math.random() * (650 - 1) + 1) / 10) * 10;
             let treeOn = true;
             treePos.treePositions[tree] = { palmTree, randomLeft, randomTop, treeOn }
+            updatePositions({ id: `tree-${index}`, x: treePos.treePositions[tree].randomLeft, y: treePos.treePositions[tree].randomTop })
+
         })
         settreeAllower(true)
+
     }, []);
     //Collision Checker. 
 

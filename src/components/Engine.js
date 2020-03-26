@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import Stampede from './Stampede';
 import Enemy from './Enemy';
 import useInterval from './use-interval.hook';
+import {TreesContext, TreeProvider} from './TreesContext';
 
 
 export const Engine = React.createContext();
@@ -36,7 +37,6 @@ const MonkeyStampede = {
     }
 
 }
-
 let TreeProperties = {
     positionLeft: 900,
     positionTop: 100,
@@ -44,14 +44,18 @@ let TreeProperties = {
         tree1: null,
         tree2: null,
         tree3: null,
+        tree4: null,
         tree5: null,
         tree6: null,
         tree7: null,
         tree8: null,
         tree9: null,
-
+        tree10: null,
     }
+}
 
+const InitialPosition = {
+    
 }
 
 
@@ -110,8 +114,11 @@ const EngineProvider = ({ children }) => {
                 <Board style={{
                 }}>
 
-                    <Player></Player>
+{/* provider here. provider has reducers, provider will have initial state. array of tree positions. */}
+<TreeProvider>
 
+
+                    <Player></Player>
                     {character.playerAction ? <StyledHit
                         ref={hitArea}
                         style={{
@@ -120,7 +127,6 @@ const EngineProvider = ({ children }) => {
                             position: 'absolute',
                             left: `${character.left + character.hitradiusLeft}px`,
                             top: `${character.top + character.hitradiusTop}px`,
-
                         }}>
                         👊
                      
@@ -128,6 +134,7 @@ const EngineProvider = ({ children }) => {
                     </StyledHit> : <span></span>}
 
                     <Enemy></Enemy>
+      </TreeProvider>
 
 
 

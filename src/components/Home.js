@@ -7,7 +7,7 @@ const Home = () => {
         <StyledTitle>
             <StyledHeader>
                 <h1> Welcome to The Jungle!</h1>
-                <h2>The goal is to collect as many bananas as possible! Be wary of the tigers guarding them 🐅 </h2>
+                <h2>Collect as many bananas as possible! Be wary of the tigers guarding them 🐅 </h2>
                 <StartButton><Link to='/game'>🌴 Start Game 🌴 </Link></StartButton>
             </StyledHeader>
         </StyledTitle>
@@ -17,13 +17,23 @@ const Home = () => {
 export default Home;
 const StyledHeader = styled.header`
 text-align: center;
-font-size: 1em;
+font-size: 2em;
+
+background-image: url(/jungle.jpg);
+height: 100vh;
+width: 100vw;
+background-size: cover;
+position: fixed;
+background-repeat: no-repeat;
+
+color: white;
+
+
 `
 const StyledTitle = styled.div`
 display: flex;
 justify-content: center;
 `
-
 const StartButton = styled.button`
   font-size: 48px;
   outline: none;

@@ -3,7 +3,7 @@ import Player from './Player';
 import styled from 'styled-components';
 import Enemy from './Enemy';
 import useInterval from './use-interval.hook';
-import {TreeProvider} from './TreesContext';
+import { TreeProvider } from './TreesContext';
 
 
 export const Engine = React.createContext();
@@ -22,10 +22,8 @@ const PlayerProperties = {
     health: 200,
     bananas: 0,
     hitradiusTop: 32,
-    hitradiusLeft: 0,
-
+    hitradiusLeft: 0
 }
-
 const MonkeyStampede = {
     Monkeys: {
         monkey1: '🐒',
@@ -64,7 +62,7 @@ const EngineProvider = ({ children }) => {
     //no dmg shield active 
     const [stopDmg, setStopDmg] = React.useState(false);
 
-    
+
 
     const [hitColor, sethitColor] = React.useState(false);
 
@@ -76,7 +74,6 @@ const EngineProvider = ({ children }) => {
 
 
     return (
-
         <Engine.Provider value={{
             enemy, setEnemy,
             treePos, settreePos,
@@ -88,35 +85,65 @@ const EngineProvider = ({ children }) => {
             stopDmg,
             setStopDmg
         }}>
+            {/* healthBar */}
+            <StyledHp>
+                <StyledHealthText>Health</StyledHealthText>
+                <div style={{ border: 'solid black 5px', backgroundColor: 'lightgreen', width: `${character.health}px`, height: '30px' }}></div>
+            </StyledHp>
+            <StyledHp>
+                <StyledHealthText>Active Abilities:
+                     {stopDmg ?
+                        <StyledAbilities>🛡:
+                            <div><strong>Shield is Active.</strong></div>
+                            <div><strong>Duration:</strong> 10seconds</div>
+                            <div><strong>Damage Taken:</strong> None</div>
+                        </StyledAbilities> : <></>}
+                    <StyledAbilities>
+                        {fireCollision ?
+                            <StyledStampede><strong>Stampede: press Q</strong>🐒🐒🐒🐒
+
+                            </StyledStampede> : <span></span>}
+                    </StyledAbilities>
+
+
+                </StyledHealthText>
+            </StyledHp>
+            <StyledAttacks>
+                <div>
+                    <strong>Game Instructions</strong>
+                    <div><strong>Movement:</strong></div>
+                    <div><strong>↕</strong> Up - Down</div>
+                    <div><strong>↔ </strong>Left - Right</div>
+                    <div><strong>Press Q</strong> - Stampede</div>
+                    <div><strong>Spacebar </strong>- Punch</div>
+
+                </div>
+
+            </StyledAttacks>
+
+
             <StyledGameBoard>
                 <Board style={{
                 }}>
 
-{/* provider here. provider has reducers, provider will have initial state. array of tree positions. */}
-<TreeProvider>
-
-
-                    <Player></Player>
-                    {character.playerAction ? <StyledHit
-                        style={{
-                            width: 32,
-                            height: 32,
-                            position: 'absolute',
-                            left: `${character.left + character.hitradiusLeft}px`,
-                            top: `${character.top + character.hitradiusTop}px`,
-                        }}>
-                        👊
-                     
-
-                    </StyledHit> : <span></span>}
-
-                    <Enemy></Enemy>
-      </TreeProvider>
+                    <TreeProvider>
+                        <Player></Player>
+                        {character.playerAction ? <StyledHit
+                            style={{
+                                width: 32,
+                                height: 32,
+                                position: 'absolute',
+                                left: `${character.left + character.hitradiusLeft}px`,
+                                top: `${character.top + character.hitradiusTop}px`,
+                            }}>
+                            👊
+                    </StyledHit> : <></>}
+                        <Enemy></Enemy>
+                    </TreeProvider>
 
 
 
                 </Board>
-                {fireCollision ? <StyledStampede>STAMPEDE READY: 🐒</StyledStampede> : <span></span>}
 
             </StyledGameBoard>
 
@@ -149,13 +176,39 @@ font-size: 40px;
 position: absolute;
 left: 220px;
 top: 0px;
-
+`
+const StyledHealthText = styled.span`
+font-size: 40px;
+`
+const StyledAbilities = styled.span`
+font-size: 30px;
 `
 
 const StyledStampede = styled.div`
-font-size: 20px;
-position: absolute;
-left: 0;
+font-size: 30px;
+
+`
+
+const StyledHp = styled.div`
+display: flex;
+justify-content: flex-end;
+margin-right: 200px;
+font-size: 0.5em;
+text-align: center;
+
+
+`
+
+const StyledAttacks = styled.div`
+display: flex;
+justify-content: flex-end;
+align-self: flex-end;
+margin-top: 300px;
+margin-right: 300px;
+font-size: 1em;
+text-align: center;
+
+
 `
 
 

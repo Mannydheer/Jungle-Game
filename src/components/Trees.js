@@ -81,7 +81,7 @@ const Trees = ({ setStopDmg, stopDmg, setBarrier, moveStampede, setShield, shiel
                 && character.left >= shieldPositionLeft
                 && character.left <= shieldPositionRight) {
 
-                character.health += 200;
+
                 character.shield.shieldLeft = 0;
                 character.shield.shieldTop = 0;
                 setShield(false)
@@ -104,8 +104,18 @@ const Trees = ({ setStopDmg, stopDmg, setBarrier, moveStampede, setShield, shiel
                 setCount(count + 1)
             }
         })
-
+        if (count === 3) {
+            window.alert('WINNER')
+        }
     }, [treePos]);
+    //COUNT WINNER CHECKER.
+    React.useEffect(() => {
+        if (count === 10) {
+            window.alert('WINNER')
+        }
+    }, [count]);
+
+
 
 
     return (
@@ -118,7 +128,7 @@ const Trees = ({ setStopDmg, stopDmg, setBarrier, moveStampede, setShield, shiel
                     }
                 }) : <div></div>}
 
-            <div>bananas Collected:
+            <div>Bananas Collected:
                  {
 
                 } {count}

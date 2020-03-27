@@ -189,17 +189,9 @@ const Player = () => {
         (handlePowerShield())
 
     }, []);
-
-
-
-
-
     return (
         <React.Fragment>
             <div style={{ width: '100px' }}></div>
-            <StyledHp>
-                <div style={{ border: 'solid black 5px', backgroundColor: 'lightgreen', width: `${character.health}px`, height: '30px' }}></div>
-            </StyledHp>
 
             {/* rendering player */}
             <StyledPlayer
@@ -220,7 +212,6 @@ const Player = () => {
                         borderRadius: '50%',
                         border: 'solid 2px black'
                     }}>
-
                 </div> : <></>}
             </StyledPlayer>
 
@@ -270,15 +261,6 @@ const StyledPlayer = styled.div`
 const StyleStampede = styled.div`
 width: 100px;
 height: 200px;
-
-`
-
-const StyledHp = styled.div`
-display: flex;
-justify-content: flex-end;
-font-size: 0.5em;
-text-align: center;
-
 
 `
 

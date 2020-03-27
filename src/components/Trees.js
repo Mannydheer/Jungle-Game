@@ -95,7 +95,7 @@ const Trees = ({ setStopDmg, stopDmg, setBarrier, moveStampede, setShield, shiel
         }
 
 
-    }, [character]);
+    }, [character]); //avoid do it on multiple states conditions
 
     //COUNTER OF BANANAS
     React.useEffect(() => {
@@ -104,9 +104,7 @@ const Trees = ({ setStopDmg, stopDmg, setBarrier, moveStampede, setShield, shiel
                 setCount(count + 1)
             }
         })
-        if (count === 3) {
-            window.alert('WINNER')
-        }
+
     }, [treePos]);
     //COUNT WINNER CHECKER.
     React.useEffect(() => {

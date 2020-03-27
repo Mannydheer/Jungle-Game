@@ -4,7 +4,6 @@ import Trees from './Trees';
 import { Engine } from './Engine';
 import Stampede from './Stampede';
 import useInterval from './use-interval.hook';
-import useTimeout from './useTimeout-hook';
 
 
 const Player = () => {
@@ -32,8 +31,6 @@ const Player = () => {
 
     //BARRIER CHECKER.
 
-
-
     React.useEffect(() => {
 
         if (barrier === true) {
@@ -43,6 +40,7 @@ const Player = () => {
             }, 10000);
             return () => clearTimeout(timer);
         }
+
     }, [barrier]);
 
 

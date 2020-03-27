@@ -4,10 +4,10 @@ import EachTree from './EachTree';
 import { TreeContext } from './TreesContext';
 
 
-const Trees = ({ moveStampede, setpowerUp, power, character }) => {
+const Trees = ({ setStopDmg, stopDmg, setBarrier, moveStampede, setShield, shield, setpowerUp, power, }) => {
 
     //Hooks
-    const { setFireCollision, treePos, settreePos, } = React.useContext(Engine)
+    const { setFireCollision, treePos, settreePos, character } = React.useContext(Engine)
     const { actions: { updatePositions } } = React.useContext(TreeContext)
 
     // const [treePos, settreePos] = React.useState({ ...TreeProperties })
@@ -66,7 +66,38 @@ const Trees = ({ moveStampede, setpowerUp, power, character }) => {
                 setpowerUp(false);
             }
         }
+
+        // shield collision
+        if (shield) { //if shield is active
+            let shieldPositionLeft = character.shield.shieldLeft - 30;
+            let shieldPositionRight = character.shield.shieldLeft + 30;
+            let shieldPositionTop = character.shield.shieldTop - 25;
+            let shieldPositionBottom = character.shield.shieldTop + 25;
+
+
+
+            if (character.top >= shieldPositionTop
+                && character.top <= shieldPositionBottom
+                && character.left >= shieldPositionLeft
+                && character.left <= shieldPositionRight) {
+
+                character.health += 200;
+                character.shield.shieldLeft = 0;
+                character.shield.shieldTop = 0;
+                setShield(false)
+                setBarrier(true)
+                setStopDmg(true)
+
+
+
+            }
+
+        }
+
+
     }, [character]);
+
+    //COUNTER OF BANANAS
     React.useEffect(() => {
         Object.keys(treePos.treePositions).forEach(tree => {
             if (treePos.treePositions[tree].treeOn === false) {

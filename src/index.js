@@ -6,9 +6,9 @@ import * as serviceWorker from './serviceWorker';
 import EngineProvider from './components/Engine'
 
 ReactDOM.render(
-    <EngineProvider>
-        <App />
-    </EngineProvider>
+
+    <App />
+
 
     , document.getElementById('root'));
 

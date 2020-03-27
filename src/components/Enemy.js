@@ -27,7 +27,7 @@ let Tigers = {
 const Enemy = () => {
 
 
-    const { treePos, SetCharacter, character, enemy, setEnemy } = React.useContext(Engine)
+    const { stopDmg, treePos, SetCharacter, character, enemy, setEnemy } = React.useContext(Engine)
     const { treeState } = React.useContext(TreeContext)
 
 
@@ -41,8 +41,6 @@ const Enemy = () => {
     const [danger, setDanger] = React.useState(false);
     const [offSet, setoffSet] = React.useState(288)
 
-    console.log(tigerProperties)
-
     let allTigers = Object.keys(tigerProperties.tigerPos);
 
     React.useEffect(() => {
@@ -50,7 +48,6 @@ const Enemy = () => {
 
         if (treeState.treePositions.length > 0) {
             allTigers.forEach((tiger, index) => {
-                console.log(treeState)
                 let randomLeft = treeState.treePositions[index].x - 20
                 let randomTop = treeState.treePositions[index].y + 30
                 let tigerOn = true;
@@ -128,6 +125,10 @@ const Enemy = () => {
             let tigerRight = tigerProperties.tigerPos[tiger].randomLeft + 30;
             let tigerTop = tigerProperties.tigerPos[tiger].randomTop - 25;
             let tigerBottom = tigerProperties.tigerPos[tiger].randomTop + 25;
+
+
+
+            //fist hit collision
             if (
                 hitPositionLeft >= tigerLeft
                 && hitPositionLeft <= tigerRight
@@ -150,19 +151,19 @@ const Enemy = () => {
 
             }
 
-
             //collision for THE PLAYER HP.
+            if (stopDmg === false) {
+                if (
+                    character.left >= tigerLeft
+                    && character.left <= tigerRight
+                    && character.top >= tigerTop
+                    && character.top <= tigerBottom
+                ) {
+                    character.health -= 20;
 
-            if (
-                character.left >= tigerLeft
-                && character.left <= tigerRight
-                && character.top >= tigerTop
-                && character.top <= tigerBottom
-            ) {
-                character.health -= 20;
-
-                if (character.health === 0) {
-                    window.alert("DEAD")
+                    if (character.health === 0) {
+                        window.alert("DEAD")
+                    }
                 }
             }
 

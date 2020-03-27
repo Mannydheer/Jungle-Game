@@ -4,39 +4,51 @@ import Trees from './Trees';
 import { Engine } from './Engine';
 import Stampede from './Stampede';
 import useInterval from './use-interval.hook';
+import useTimeout from './useTimeout-hook';
 
 
-
-const MAXSTEPS = 3;
-const WALKSIZE = 32;
 const Player = () => {
 
 
-    const { playerArea, sethitColor, monkeys, setMonkeys, SetCharacter, character, setFireCollision, fireCollision } = React.useContext(Engine)
+    const { setStopDmg, stopDmg, playerArea, sethitColor, SetCharacter, character, setFireCollision, fireCollision } = React.useContext(Engine)
     const offset = { top: 0, left: 0 } //controlling png file. 
-
-    const [rotate, setRotate] = React.useState({
-        currentRotate: 0,
-        previousRotate: 0,
-    });
     const [facing, setFacing] = React.useState({
         current: 0,
         previous: 0,
     });
     const [step, setStep] = React.useState(0);
-    const [health, setHealth] = React.useState(100);
     const [power, setpowerUp] = React.useState(false);
+    //shields
+    const [shield, setShield] = React.useState(false);
+    const [barrier, setBarrier] = React.useState(false);
+
     const [stampedeAttack, setstampedeAttack] = React.useState(false);
     let [moveStampede, setmoveStampede] = React.useState(0)
 
-    // const [hitBool, sethitBool] = React.useState(false);
-    // const [hitColor, sethitColor] = React.useState(false);
-    // const backgroundColor = hitColor ? "red" : "blue";
 
 
     const HOP_LENGTH = 15;
+    const MAXSTEPS = 3;
+
+    //BARRIER CHECKER.
 
 
+
+    React.useEffect(() => {
+
+        if (barrier === true) {
+            const timer = setTimeout(() => {
+                setBarrier(false);
+                setStopDmg(false)
+            }, 10000);
+            return () => clearTimeout(timer);
+        }
+    }, [barrier]);
+
+
+
+
+    //FOR STAMPEDE ABILITY. 
     useInterval(() => {
         if (stampedeAttack) {
             if (moveStampede < 950) {
@@ -47,7 +59,7 @@ const Player = () => {
                 setFireCollision(false);
             }
         }
-    }, 500);
+    }, 5000);
 
     const handleMovement = (event) => {
         switch (event.code) {
@@ -123,7 +135,6 @@ const Player = () => {
                     ...character,
                     playerAction: true
                 });
-                handleHeadBump();
                 break;
             }
 
@@ -151,25 +162,37 @@ const Player = () => {
             window.removeEventListener('keydown', handleMovement);
         }
     }, [character]);
-
-    const handlePowerBoost = () => {
+    console.log(character)
+    //---------------------POWER BOOST -------------------------
+    const handlePowerShield = () => {
         let randomLeft = Math.round((Math.random() * (980) + 0) / 10) * 10
         let randomTop = Math.round((Math.random() * (650 - 1) + 1) / 10) * 10
+        let shieldLeft = randomLeft + 50;
+        let shieldTop = randomTop + 50;
         let boost = '💥';
+        let shield = '🛡';
+
+
         SetCharacter({
             ...character,
-            power: { boost, randomLeft, randomTop }
+            power: { boost, randomLeft, randomTop },
+            shield: { shield, shieldLeft, shieldTop }
         })
         setpowerUp(true);
+        setShield(true);
     }
+
+    //---------------------SHEILD -------------------------
 
     React.useEffect(() => {
-        (handlePowerBoost());
+        //calls shield and powerBoost
+        (handlePowerShield())
+
     }, []);
 
-    const handleHeadBump = () => {
 
-    }
+
+
 
     return (
         <React.Fragment>
@@ -190,18 +213,44 @@ const Player = () => {
                     background: `url(/monkey.png) -${offset.top + step * 32}px -${offset.left + facing.current}px`
                 }}
             >
+                {barrier ? <div
+                    style={{
+                        backgroundColor: 'transparent',
+                        width: '35px', height: '35px',
+                        borderRadius: '50%',
+                        border: 'solid 2px black'
+                    }}>
+
+                </div> : <></>}
             </StyledPlayer>
 
-            <Trees moveStampede={moveStampede} power={power} setpowerUp={setpowerUp} character={character}></Trees>
-            {power ? <div style={{ position: 'absolute', left: character.power.randomLeft, top: character.power.randomTop }}>
-                {character.power.boost}</div> : <span></span>}
+            <Trees setBarrier={setBarrier}
+                moveStampede={moveStampede}
+                power={power} setpowerUp={setpowerUp}
+                character={character}
+                setShield={setShield}
+                shield={shield}
+                stopDmg={stopDmg}
+                setStopDmg={setStopDmg}
+            >
+            </Trees>
+            {
+                power ? <div style={{ position: 'absolute', left: character.power.randomLeft, top: character.power.randomTop }}>
+                    {character.power.boost}</div> : <span></span>
+            }
+            {
+                shield ? <div style={{ position: 'absolute', left: character.shield.shieldLeft, top: character.shield.shieldTop }}>
+                    {character.shield.shield}</div> : <span></span>
+            }
 
-            {stampedeAttack && fireCollision ? <StyleStampede style={{ position: 'absolute', left: moveStampede }}>
+            {
+                stampedeAttack && fireCollision ? <StyleStampede style={{ position: 'absolute', left: moveStampede }}>
 
-                <Stampede></Stampede>
-            </StyleStampede> : <span></span>}
+                    <Stampede></Stampede>
+                </StyleStampede> : <span></span>
+            }
 
-        </React.Fragment>
+        </React.Fragment >
 
 
 
@@ -213,7 +262,6 @@ export default Player;
 
 
 const StyledPlayer = styled.div`
-overflow: hidden;
 
 
 

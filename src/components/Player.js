@@ -160,7 +160,6 @@ const Player = () => {
             window.removeEventListener('keydown', handleMovement);
         }
     }, [character]);
-    console.log(character)
     //---------------------POWER BOOST -------------------------
     const handlePowerShield = () => {
         let randomLeft = Math.round((Math.random() * (980) + 0) / 10) * 10

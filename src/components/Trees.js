@@ -2,19 +2,20 @@ import React from 'react';
 import { Engine } from './Engine';
 import EachTree from './EachTree';
 import { TreeContext } from './TreesContext';
+import useInterval from './use-interval.hook';
+
 
 
 const Trees = ({ setStopDmg, stopDmg, setBarrier, moveStampede, setShield, shield, setpowerUp, power, }) => {
 
     //Hooks
-    const { setFireCollision, treePos, settreePos, character } = React.useContext(Engine)
+    const { password, name, setFireCollision, treePos, settreePos, character } = React.useContext(Engine)
     const { actions: { updatePositions } } = React.useContext(TreeContext)
 
     // const [treePos, settreePos] = React.useState({ ...TreeProperties })
     const [treeAllower, settreeAllower] = React.useState(false)
     let [count, setCount] = React.useState(0);
-
-    console.log(treePos)
+    let [timer, setTimer] = React.useState(0);
     //Generate random trees
     React.useEffect(() => {
         let allTrees = Object.keys(treePos.treePositions);
@@ -108,10 +109,37 @@ const Trees = ({ setStopDmg, stopDmg, setBarrier, moveStampede, setShield, shiel
     }, [treePos]);
     //COUNT WINNER CHECKER.
     React.useEffect(() => {
-        if (count === 10) {
-            window.alert('WINNER')
+        if (count === 1) {
+
+            const updateData = {
+                username: name,
+                password: password,
+                time: timer,
+            }
+            fetch('http://localhost:4000/handleTimer', {
+                method: "POST",
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-type': 'application/json'
+                },
+                body: JSON.stringify(updateData)
+            })
+            // .then(data => {
+            //     return data.json();
+            // })
+            // .then(info => {
+            //     console.log(info)
+            // })
+
+
         }
     }, [count]);
+
+
+    //user interval for ocllision
+    useInterval(() => {
+        setTimer(timer + 1)
+    }, 1000);
 
 
 
@@ -130,6 +158,9 @@ const Trees = ({ setStopDmg, stopDmg, setBarrier, moveStampede, setShield, shiel
                  {
 
                 } {count}
+            </div>
+            <div>
+                {timer}
             </div>
 
 

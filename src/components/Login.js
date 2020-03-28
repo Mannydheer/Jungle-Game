@@ -10,7 +10,7 @@ import { Link } from 'react-router-dom';
 
 
 
-const Login = () => {
+const Login = ({ setName, setPassword }) => {
 
 
     //change function names?
@@ -21,7 +21,7 @@ const Login = () => {
 
     const [login, setLogin] = React.useState(false);
     const [failed, setFailed] = React.useState(false);
-
+    const [bestTime, setBestTime] = React.useState(0);
 
     //fetch to get speific user
     const handleGetUserData = (event) => {
@@ -35,7 +35,7 @@ const Login = () => {
             },
         })
             .then(data => {
-                console.log(data)
+
                 return data.json();
             })
             .then(user => {
@@ -47,10 +47,12 @@ const Login = () => {
                 else if (user.username === userInfo.userName && user.password === userInfo.password) {
                     setLogin(true)
                     setFailed(false)
+                    setBestTime(user.time)
+                    setName(userInfo.userName)
+                    setPassword(userInfo.password)
                 }
             })
     }
-
     return (
         <React.Fragment>
 
@@ -80,7 +82,8 @@ const Login = () => {
                     </button>
                 </div>
             </form>
-            {login ? <div><Link to='/game'> Successful Login: Start Game :) </Link></div> : <></>}
+            {login ? <div><Link to='/game'> Successful Login: Start Game :)
+            </Link><div> Your last score {bestTime}seconds </div></div> : <></>}
             {failed ? <div><Link to='/Signup'> Failed Login! Make sure you are signed up :) </Link></div> : <></>}
 
 

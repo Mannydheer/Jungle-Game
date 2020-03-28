@@ -12,6 +12,7 @@ import Login from './components/Login';
 function App() {
 
   const [name, setName] = React.useState('');
+  const [password, setPassword] = React.useState('')
 
 
 
@@ -29,14 +30,14 @@ function App() {
         <Signup setName={setName}></Signup>
       </Route>
       <Route exact path='/login'>
-        <Login></Login>
+        <Login setName={setName} setPassword={setPassword}></Login>
       </Route>
       <Route exact path="/">
         <Home name={name}>
         </Home>
       </Route>
       <Route exact path="/game">
-        <EngineProvider></EngineProvider>
+        <EngineProvider password={password} name={name}></EngineProvider>
       </Route>
 
     </BrowserRouter>

@@ -38,20 +38,16 @@ let TreeProperties = {
     positionTop: 100,
     treePositions: {
         tree1: null,
-        tree2: null,
-        tree3: null,
-        tree4: null,
-        tree5: null,
-        tree6: null,
-        tree7: null,
-        tree8: null,
-        tree9: null,
-        tree10: null,
+        // tree2: null,
+        // tree3: null,
+        // tree4: null,
+        // tree5: null,
+
     }
 }
 
 
-const EngineProvider = ({ children }) => {
+const EngineProvider = ({ children, name, password }) => {
 
     const [character, SetCharacter] = React.useState({ ...PlayerProperties })
     const [monkeys, setMonkeys] = React.useState({ ...MonkeyStampede })
@@ -61,7 +57,6 @@ const EngineProvider = ({ children }) => {
 
     //no dmg shield active 
     const [stopDmg, setStopDmg] = React.useState(false);
-
 
 
     const [hitColor, sethitColor] = React.useState(false);
@@ -83,7 +78,10 @@ const EngineProvider = ({ children }) => {
             setFireCollision,
             sethitColor,
             stopDmg,
-            setStopDmg
+            setStopDmg,
+            name,
+            password
+
         }}>
             {/* healthBar */}
             <StyledHp>

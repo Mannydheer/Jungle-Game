@@ -120,6 +120,9 @@ const EngineProvider = ({ children }) => {
                 </div>
 
             </StyledAttacks>
+            <button>
+                SAVE
+            </button>
 
 
             <StyledGameBoard>

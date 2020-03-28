@@ -2,11 +2,11 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
-const Home = () => {
+const Home = ({ name }) => {
     return (
         <StyledTitle>
             <StyledHeader>
-                <h1> Welcome to The Jungle!</h1>
+                <h1> Welcome <strong>{name}</strong> to The Jungle!</h1>
                 <h2>Collect as many bananas as possible! Be wary of the tigers guarding them 🐅 </h2>
                 <StartButton><Link to='/game'>🌴 Start Game 🌴 </Link></StartButton>
             </StyledHeader>

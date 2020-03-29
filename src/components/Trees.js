@@ -16,6 +16,7 @@ const Trees = ({ setStopDmg, stopDmg, setBarrier, moveStampede, setShield, shiel
     const [treeAllower, settreeAllower] = React.useState(false)
     let [count, setCount] = React.useState(0);
     let [timer, setTimer] = React.useState(0);
+    let [stopTimer, setStopTimer] = React.useState(false);
     //Generate random trees
     React.useEffect(() => {
         let allTrees = Object.keys(treePos.treePositions);
@@ -107,9 +108,10 @@ const Trees = ({ setStopDmg, stopDmg, setBarrier, moveStampede, setShield, shiel
         })
 
     }, [treePos]);
+    //GAME END. 
     //COUNT WINNER CHECKER.
     React.useEffect(() => {
-        if (count === 1) {
+        if (count === 5) {
 
             const updateData = {
                 username: name,
@@ -124,21 +126,17 @@ const Trees = ({ setStopDmg, stopDmg, setBarrier, moveStampede, setShield, shiel
                 },
                 body: JSON.stringify(updateData)
             })
-            // .then(data => {
-            //     return data.json();
-            // })
-            // .then(info => {
-            //     console.log(info)
-            // })
-
+            setStopTimer(true);
 
         }
     }, [count]);
 
 
-    //user interval for ocllision
+    //user interval timer.
     useInterval(() => {
-        setTimer(timer + 1)
+        if (stopTimer === false) {
+            setTimer(timer + 1)
+        }
     }, 1000);
 
 

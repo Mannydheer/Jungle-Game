@@ -9,6 +9,7 @@ const Home = ({ name }) => {
                 <h1> Welcome <strong>{name}</strong> to The Jungle!</h1>
                 <h2>Collect as many bananas as possible! Be wary of the tigers guarding them 🐅 </h2>
                 <StartButton><Link to='/game'>🌴 Start Game 🌴 </Link></StartButton>
+                <h3>You can keep track of your score if you make an account!</h3>
             </StyledHeader>
         </StyledTitle>
     )

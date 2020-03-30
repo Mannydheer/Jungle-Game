@@ -10,6 +10,7 @@ const Tiger = ({ offSet, danger, tigerProperties, tiger }) => {
     return (
         <React.Fragment>
 
+            {/* health bar control */}
             <div style={{ position: 'absolute', left: `${tigerProperties.tigerPos[tiger].randomLeft}px`, top: `${tigerProperties.tigerPos[tiger].randomTop}px`, }}>
                 <div style={{ width: `${tigerProperties.tigerPos[tiger].tigerHp}px`, height: '5px', backgroundColor }}></div>
             </div>

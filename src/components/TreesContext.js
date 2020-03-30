@@ -6,9 +6,8 @@ export const TreeContext = createContext();
 
 
 const InitialStatePosition = {
-    treePositions: [
-
-    ],
+    treePositions: [],
+    bananaPositions: [],
 }
 
 
@@ -34,6 +33,8 @@ const reducer = (state, action) => {
 export const TreeProvider = ({ children }) => {
 
     const [treeState, dispatch] = React.useReducer(reducer, InitialStatePosition)
+
+
     const updatePositions = (treePositions) => {
         dispatch({
             type: 'update-tree-positions',
@@ -42,15 +43,23 @@ export const TreeProvider = ({ children }) => {
 
 
     }
+    const handleBananaPositions = (bananaPositions) => {
+        dispatch({
+            type: 'update-banana-positions',
+            bananaPositions
+        })
 
 
+    }
+
+    console.log(treeState)
 
 
 
     return (
         <TreeContext.Provider value={{
             treeState,
-            actions: { updatePositions },
+            actions: { updatePositions, handleBananaPositions },
         }}>
 
             {children}

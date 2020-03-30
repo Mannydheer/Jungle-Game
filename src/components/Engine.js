@@ -15,14 +15,18 @@ const EnemyProperties = {
 }
 
 const PlayerProperties = {
-    playerAction: false,
+    playerAction: false, //for punch active.
+    playerAmmunition: false,
     size: 500,
     top: 250,
     left: 700,
     health: 200,
     bananas: 0,
+    //punch
+    //will control where the punch will appear. 
     hitradiusTop: 32,
-    hitradiusLeft: 0
+    hitradiusLeft: 0,
+
 }
 const MonkeyStampede = {
     Monkeys: {
@@ -55,7 +59,14 @@ const EngineProvider = ({ children, name, password, bestTime }) => {
     const [enemy, setEnemy] = React.useState({ ...EnemyProperties })
     const [fireCollision, setFireCollision] = React.useState(false);
 
-    console.log(character)
+
+    let [bananaMovement, setbananaMovement] = React.useState({
+        left: 0,
+        top: 0,
+    })
+    const [allowFire, setallowFire] = React.useState(true);
+
+
 
     //no dmg shield active 
     const [stopDmg, setStopDmg] = React.useState(false);
@@ -63,11 +74,13 @@ const EngineProvider = ({ children, name, password, bestTime }) => {
 
     const [hitColor, sethitColor] = React.useState(false);
 
+    //active punch when only playerAction is true
     useInterval(() => {
         if (character.playerAction) {
             character.playerAction = false;
         }
     }, 100);
+
 
 
     return (
@@ -82,7 +95,11 @@ const EngineProvider = ({ children, name, password, bestTime }) => {
             stopDmg,
             setStopDmg,
             name,
-            password
+            password,
+            setbananaMovement,
+            bananaMovement,
+            allowFire,
+            setallowFire
 
         }}>
             <div>
@@ -143,6 +160,7 @@ const EngineProvider = ({ children, name, password, bestTime }) => {
                             }}>
                             👊
                     </StyledHit> : <></>}
+
                         <Enemy></Enemy>
                     </TreeProvider>
 

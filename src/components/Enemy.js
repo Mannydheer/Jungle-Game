@@ -48,7 +48,7 @@ const Enemy = () => {
 
         if (treeState.treePositions.length > 0) {
             allTigers.forEach((tiger, index) => {
-                let randomLeft = treeState.treePositions[index].x - 20
+                let randomLeft = treeState.treePositions[index].x - 50
                 let randomTop = treeState.treePositions[index].y + 30
                 let tigerOn = true;
                 let tigerHp = 40;
@@ -72,34 +72,34 @@ const Enemy = () => {
             let maxTigerHop = 10;
 
             //right movement.-------------------------------------------
-            if (maxMovement >= 1 && maxMovement <= 3) {
+            if (maxMovement >= 1 && maxMovement <= 10) {
                 setmaxMovement(maxMovement + 1)
                 tigerProperties.tigerPos[tiger].randomLeft += maxTigerHop
                 setoffSet(tigerSpriteRight)
             }
 
             //top movement.-------------------------------------------
-            if (maxMovement >= 4 && maxMovement <= 7) {
+            if (maxMovement >= 11 && maxMovement <= 20) {
                 setmaxMovement(maxMovement + 1)
                 tigerProperties.tigerPos[tiger].randomTop -= maxTigerHop
                 setoffSet(tigerSpriteTop)
             }
 
             // //left movement-------------------------------------------
-            if (maxMovement >= 8 && maxMovement <= 10) {
+            if (maxMovement >= 21 && maxMovement <= 30) {
                 setmaxMovement(maxMovement + 1)
                 tigerProperties.tigerPos[tiger].randomLeft -= maxTigerHop
                 setoffSet(tigerSpriteLeft)
             }
             // //bottom mvoement -------------------------------------------
 
-            if (maxMovement >= 11 && maxMovement <= 14) {
+            if (maxMovement >= 31 && maxMovement <= 40) {
                 setmaxMovement(maxMovement + 1)
                 tigerProperties.tigerPos[tiger].randomTop += maxTigerHop
                 setoffSet(tigerSpriteBottom)
             }
 
-            if (maxMovement === 15) {
+            if (maxMovement === 41) {
                 setmaxMovement(1)
             }
 
@@ -112,7 +112,7 @@ const Enemy = () => {
     //collision for each tiger. 
     React.useEffect(() => {
 
-        console.log(character.playerAction, 'P[LAYERACTION')
+        // console.log(character.playerAction, 'P[LAYERACTION')
 
         let hitPositionLeft = character.left + character.hitradiusLeft;
         let hitPositionTop = character.top + character.hitradiusTop;

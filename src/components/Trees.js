@@ -3,13 +3,14 @@ import { Engine } from './Engine';
 import EachTree from './EachTree';
 import { TreeContext } from './TreesContext';
 import useInterval from './use-interval.hook';
+import LionBoss from './LionBoss';
 
 
 
 const Trees = ({ setStopDmg, stopDmg, setBarrier, moveStampede, setShield, shield, setpowerUp, power, }) => {
 
     //Hooks
-    const { password, name, setFireCollision, treePos, settreePos, character } = React.useContext(Engine)
+    const { allowFire, bananaMovement, setbananaMovement, password, name, setFireCollision, treePos, settreePos, character } = React.useContext(Engine)
     const { actions: { updatePositions } } = React.useContext(TreeContext)
 
     // const [treePos, settreePos] = React.useState({ ...TreeProperties })
@@ -17,6 +18,9 @@ const Trees = ({ setStopDmg, stopDmg, setBarrier, moveStampede, setShield, shiel
     let [count, setCount] = React.useState(0);
     let [timer, setTimer] = React.useState(0);
     let [stopTimer, setStopTimer] = React.useState(false);
+
+    //lionboss
+    let [triggerLion, settriggerLion] = React.useState(false);
     //Generate random trees
     React.useEffect(() => {
         let allTrees = Object.keys(treePos.treePositions);
@@ -111,13 +115,14 @@ const Trees = ({ setStopDmg, stopDmg, setBarrier, moveStampede, setShield, shiel
     //GAME END. 
     //COUNT WINNER CHECKER.
     React.useEffect(() => {
-        if (count === 5) {
+        if (count === 1) {
 
             const updateData = {
                 username: name,
                 password: password,
                 time: timer,
             }
+            //post the new updated time in the collection of the user
             fetch('http://localhost:4000/handleTimer', {
                 method: "POST",
                 headers: {
@@ -127,6 +132,7 @@ const Trees = ({ setStopDmg, stopDmg, setBarrier, moveStampede, setShield, shiel
                 body: JSON.stringify(updateData)
             })
             setStopTimer(true);
+            settriggerLion(true) //active lion component
 
         }
     }, [count]);
@@ -160,6 +166,7 @@ const Trees = ({ setStopDmg, stopDmg, setBarrier, moveStampede, setShield, shiel
             <div>
                 {timer}
             </div>
+            {triggerLion ? <LionBoss allowFire={allowFire} bananaMovement={bananaMovement} setbananaMovement={setbananaMovement}></LionBoss> : <></>}
 
 
 

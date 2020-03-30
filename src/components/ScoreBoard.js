@@ -34,7 +34,6 @@ const ScoreBoard = () => {
     }
 
     //call function to fetch and aget all users. 
-    handleScores();
 
 
     return (
@@ -42,14 +41,30 @@ const ScoreBoard = () => {
             <StyledScoreBoard>
                 {/* only when fetch is complete, true and will render */}
                 {fetchComplete ?
-                    all.map(element => {
-                        return <StyledText key={element.id}>
-                            <strong>{element.username} - </strong>
-                            {element.time} seconds
-                    </StyledText>
+                    all.map((element, index) => {
+
+                        if (index === 0) {
+                            return (
+                                < StyledText style={{ backgroundColor: 'green' }} key={element.id}>
+                                    <strong>{element.username}</strong>
+                                    {element.time} seconds
+                                </StyledText>)
+                        } else {
+                            return (
+                                < StyledText key={element.id}>
+                                    <strong>{element.username} - </strong>
+                                    {element.time} seconds
+                                </StyledText>)
+                        }
+
 
                     })
                     : <></>}
+
+                <button onClick={handleScores}>
+                    See Scores
+
+                </button>
             </StyledScoreBoard>
 
 

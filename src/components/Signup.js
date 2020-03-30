@@ -21,6 +21,7 @@ const Signup = ({ setName }) => {
     });
 
     const [signupPass, setsignupPass] = React.useState(false);
+    const [minLength, setminLength] = React.useState(false);
 
 
     const handleUserData = (event) => {
@@ -38,11 +39,22 @@ const Signup = ({ setName }) => {
             body: JSON.stringify(data)
         })
             .then(data => {
-                if (data.status === 200) {
-                    setName(userInfo.userName)
-                    setsignupPass(true)
-                }
+                return (data.json())
+                // if (data.status === 200) {
+                //     setName(userInfo.userName)
+                //     setsignupPass(true)
+                //     setminLength(false)
+
+                // } else if (data.status === 404) {
+                //     setminLength(true)
+                //     setsignupPass(false)
+
+                // }
             })
+            .then(recieved => {
+                console.log(recieved)
+            })
+
     }
 
     return (
@@ -77,9 +89,8 @@ const Signup = ({ setName }) => {
                 </form>
             </StyledLogin>
             <StyledSuccess>
-
-
                 {signupPass ? <div><Link to='/'><StartBtn>Thanks for signing up! Click when you're ready to play!</StartBtn></Link></div> : <></>}
+                {minLength ? <div> Error</div> : <></>}
             </StyledSuccess>
 
 

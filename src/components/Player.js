@@ -4,12 +4,22 @@ import Trees from './Trees';
 import { Engine } from './Engine';
 import Stampede from './Stampede';
 import useInterval from './use-interval.hook';
+import { TreeContext } from './TreesContext';
+
 
 
 const Player = () => {
 
 
-    const { setStopDmg, stopDmg, playerArea, sethitColor, SetCharacter, character, setFireCollision, fireCollision } = React.useContext(Engine)
+    const { setStopDmg, stopDmg,
+        playerArea, sethitColor,
+        SetCharacter, character,
+        setFireCollision, fireCollision,
+        setbananaMovement, bananaMovement,
+        allowFire, setallowFire
+    } = React.useContext(Engine)
+    const { handleBananaPositions } = React.useContext(TreeContext)
+
     const offset = { top: 0, left: 0 } //controlling png file. 
     const [facing, setFacing] = React.useState({
         current: 0,
@@ -23,6 +33,25 @@ const Player = () => {
 
     const [stampedeAttack, setstampedeAttack] = React.useState(false);
     let [moveStampede, setmoveStampede] = React.useState(0)
+
+
+    //ammunition banana movement.
+
+    let [ammunitionMoveLeft, setammunitionMoveLeft] = React.useState(0);
+    let [ammunitionMoveTop, setammunitionMoveTop] = React.useState(0);
+
+
+    console.log(bananaMovement, 'BANANAMOVEMENT')
+
+
+    let [bananaPos, setbananaPos] = React.useState({
+        bananaLeft: 0,
+        bananaTop: 0,
+        direction: null,
+    });
+
+
+
 
 
 
@@ -69,6 +98,8 @@ const Player = () => {
                         left: moveLeft,
                         hitradiusLeft: -32,
                         hitradiusTop: 0,
+                        bananaLeft: -32,
+                        bananaTop: 0,
                     })
                     setFacing(prevState => ({
                         current: 32,
@@ -86,6 +117,8 @@ const Player = () => {
                         left: moveRight,
                         hitradiusLeft: 32,
                         hitradiusTop: 0,
+                        bananaLeft: 32,
+                        bananaTop: 0,
                     })
                     setFacing(prevState => ({
                         current: 64,
@@ -102,6 +135,8 @@ const Player = () => {
                         ...character, top: moveUp,
                         hitradiusLeft: 0,
                         hitradiusTop: -32,
+                        bananaLeft: 0,
+                        bananaTop: -32,
                     })
                     setFacing(prevState => ({
                         current: 96,
@@ -119,6 +154,8 @@ const Player = () => {
                         top: moveDown,
                         hitradiusLeft: 0,
                         hitradiusTop: 32,
+                        bananaLeft: 0,
+                        bananaTop: 32,
                     })
                     setFacing(prevState => ({
                         current: 0,
@@ -131,7 +168,7 @@ const Player = () => {
                 sethitColor(true);
                 SetCharacter({
                     ...character,
-                    playerAction: true
+                    playerAction: true //only when true is there dmg to the tiger(collision.)
                 });
                 break;
             }
@@ -142,9 +179,141 @@ const Player = () => {
                 }
                 break
             }
+            case 'KeyE': {
+                //when E is pressed, you are allowed to fire
+                //immediately after set it to false... to not allow fireing until its reset back to true.
+                if (allowFire === true) {
+                    setallowFire(false)
+                    SetCharacter({
+                        ...character,
+                        playerAmmunition: true
+                    });
+                    setbananaPos({
+                        ...bananaPos,
+                        //direction holds the position WHEN E WAS PRESSED. 
+                        direction: facing.current,
+                        bananaLeft: character.left,
+                        bananaTop: character.top
+                    })
+
+                }
+                //left movement
+            }
 
         }
     }
+    //direction onf banana.....
+
+    //banan ammunition
+    useInterval(() => {
+
+        //since this will only fire on false, E will remain 32 because another key cannot be pressed.
+        //double check for allowFire condition...?
+        if (bananaPos.direction === 32 && allowFire === false) {
+            if (ammunitionMoveLeft > -500) {
+                setammunitionMoveLeft(ammunitionMoveLeft -= 20)
+                setbananaMovement({
+                    //VERY IMPORTANT. ensure you whenever you are shooting, L,R,U,D,
+                    //that you are keeping track of the positions player to update TOP,LEFT for collisions
+                    ...bananaMovement,
+                    left: ammunitionMoveLeft + character.left,
+                    top: ammunitionMoveTop + character.top
+                })
+            }
+            else {
+                character.playerAmmunition = false;
+                setammunitionMoveLeft(0);
+                //need to reset the left banana pos. 
+                setbananaPos({
+                    ...bananaPos,
+                    bananaLeft: character.left,
+                    bananaTop: character.top,
+                })
+                //firing is allowed again when the ifstatement above is completed. 
+                setallowFire(true)
+            }
+        }
+
+        if (bananaPos.direction === 64 && allowFire === false) {
+            if (ammunitionMoveLeft < 500) {
+                setammunitionMoveLeft(ammunitionMoveLeft += 20)
+                setbananaMovement({
+                    ...bananaMovement,
+                    left: ammunitionMoveLeft + character.left,
+                    top: ammunitionMoveTop + character.top
+                })
+
+            }
+            else {
+                character.playerAmmunition = false;
+                setammunitionMoveLeft(0);
+                //need to reset the left banana pos. 
+                setbananaPos({
+                    ...bananaPos,
+                    bananaLeft: character.left,
+                    bananaTop: character.top,
+
+                })
+                setallowFire(true)
+
+            }
+        }
+        if (bananaPos.direction === 96 && allowFire === false) {
+            if (ammunitionMoveTop > -500) {
+                setammunitionMoveTop(ammunitionMoveTop -= 20)
+                setbananaMovement({
+                    ...bananaMovement,
+                    top: ammunitionMoveTop + character.top,
+                    left: ammunitionMoveLeft + character.left,
+
+                })
+
+            }
+            else {
+                character.playerAmmunition = false;
+                setammunitionMoveTop(0);
+                //need to reset the left banana pos. 
+                setbananaPos({
+                    ...bananaPos,
+                    bananaLeft: character.left,
+                    bananaTop: character.top,
+                })
+                setallowFire(true)
+
+            }
+        }
+        if (bananaPos.direction === 0 && allowFire === false) {
+            if (ammunitionMoveTop < 500) {
+                setammunitionMoveTop(ammunitionMoveTop += 20)
+                setbananaMovement({
+                    ...bananaMovement,
+                    top: ammunitionMoveTop + character.top,
+                    left: ammunitionMoveLeft + character.left,
+
+                })
+
+            }
+            else {
+                character.playerAmmunition = false;
+                setammunitionMoveTop(0);
+                //need to reset the left banana pos. 
+                setbananaPos({
+                    ...bananaPos,
+                    bananaLeft: character.left,
+                    bananaTop: character.top,
+                })
+                setallowFire(true)
+
+            }
+        }
+    }, 100);
+
+
+
+
+
+
+    //iterating through sprites.
     React.useEffect(() => {
         if (facing.current === facing.previous) {
             setStep(previousState => (
@@ -154,6 +323,7 @@ const Player = () => {
         }
     }, [facing]);
 
+    //listnening for anykeydown - calls function to handle keydowns. 
     React.useEffect(() => {
         window.addEventListener('keydown', handleMovement);
         return () => {
@@ -238,6 +408,17 @@ const Player = () => {
                 </StyleStampede> : <span></span>
             }
 
+            {character.playerAmmunition ? <StyledHit
+                style={{
+                    width: 32,
+                    height: 32,
+                    position: 'absolute',
+                    left: `${bananaPos.bananaLeft + ammunitionMoveLeft}px`,
+                    top: `${bananaPos.bananaTop + ammunitionMoveTop}px`,
+                }}>
+                🍌
+                    </StyledHit> : <></>}
+
         </React.Fragment >
 
 
@@ -262,4 +443,7 @@ height: 200px;
 `
 
 
+const StyledHit = styled.div`
 
+
+`

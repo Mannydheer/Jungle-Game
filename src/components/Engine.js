@@ -47,6 +47,7 @@ let TreeProperties = {
         tree4: null,
         tree5: null,
 
+
     }
 }
 
@@ -58,6 +59,8 @@ const EngineProvider = ({ children, name, password, bestTime }) => {
     const [treePos, settreePos] = React.useState({ ...TreeProperties })
     const [enemy, setEnemy] = React.useState({ ...EnemyProperties })
     const [fireCollision, setFireCollision] = React.useState(false);
+    //can only fire once all the bananas have been collected. 
+    const [enableBananaBullet, setEnableBananaBullet] = React.useState(false);
 
 
     let [bananaMovement, setbananaMovement] = React.useState({
@@ -99,7 +102,9 @@ const EngineProvider = ({ children, name, password, bestTime }) => {
             setbananaMovement,
             bananaMovement,
             allowFire,
-            setallowFire
+            setallowFire,
+            enableBananaBullet,
+            setEnableBananaBullet
 
         }}>
             <div>

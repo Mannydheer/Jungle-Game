@@ -30,6 +30,8 @@ const Login = ({ bestTime, setBestTime, setName, setPassword }) => {
                 return data.json();
             })
             .then(user => {
+
+                console.log(user)
                 if (user === null || user.redirected === false) {
                     setFailed(true)
                     setLogin(false)

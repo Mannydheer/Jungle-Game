@@ -10,7 +10,7 @@ import LionBoss from './LionBoss';
 const Trees = ({ setStopDmg, stopDmg, setBarrier, moveStampede, setShield, shield, setpowerUp, power, }) => {
 
     //Hooks
-    const { allowFire, bananaMovement, setbananaMovement, password, name, setFireCollision, treePos, settreePos, character } = React.useContext(Engine)
+    const { setEnableBananaBullet, allowFire, bananaMovement, setbananaMovement, password, name, setFireCollision, treePos, settreePos, character } = React.useContext(Engine)
     const { actions: { updatePositions } } = React.useContext(TreeContext)
 
     // const [treePos, settreePos] = React.useState({ ...TreeProperties })
@@ -21,10 +21,12 @@ const Trees = ({ setStopDmg, stopDmg, setBarrier, moveStampede, setShield, shiel
 
     //lionboss
     let [triggerLion, settriggerLion] = React.useState(false);
+
     //Generate random trees
     React.useEffect(() => {
         let allTrees = Object.keys(treePos.treePositions);
         let palmTree = '🍌';
+
         allTrees.forEach((tree, index) => {
             let randomLeft = Math.round((Math.random() * (980) + 0) / 10) * 10;
             let randomTop = Math.round((Math.random() * (650 - 1) + 1) / 10) * 10;
@@ -115,8 +117,8 @@ const Trees = ({ setStopDmg, stopDmg, setBarrier, moveStampede, setShield, shiel
     //GAME END. 
     //COUNT WINNER CHECKER.
     React.useEffect(() => {
-        if (count === 1) {
-
+        if (count === 5) {
+            setEnableBananaBullet(true)
             const updateData = {
                 username: name,
                 password: password,
@@ -135,6 +137,7 @@ const Trees = ({ setStopDmg, stopDmg, setBarrier, moveStampede, setShield, shiel
             settriggerLion(true) //active lion component
 
         }
+
     }, [count]);
 
 

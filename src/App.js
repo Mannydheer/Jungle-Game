@@ -12,6 +12,7 @@ import ScoreBoard from './components/ScoreBoard';
 
 function App() {
 
+
   const [name, setName] = React.useState('');
   const [password, setPassword] = React.useState('')
   const [bestTime, setBestTime] = React.useState(0);

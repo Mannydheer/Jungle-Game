@@ -22,6 +22,11 @@ const Signup = ({ setName }) => {
 
     const [signupPass, setsignupPass] = React.useState(false);
     const [minLength, setminLength] = React.useState(false);
+    const [error, setError] = React.useState(' ');
+    const [registerSuccess, setregisterSuccess] = React.useState(' ');
+
+    console.log(registerSuccess)
+
 
 
     const handleUserData = (event) => {
@@ -39,20 +44,31 @@ const Signup = ({ setName }) => {
             body: JSON.stringify(data)
         })
             .then(data => {
+                console.log(data)
                 return (data.json())
-                // if (data.status === 200) {
-                //     setName(userInfo.userName)
-                //     setsignupPass(true)
-                //     setminLength(false)
 
-                // } else if (data.status === 404) {
-                //     setminLength(true)
-                //     setsignupPass(false)
-
-                // }
             })
             .then(recieved => {
                 console.log(recieved)
+
+                //error handling.
+                if (recieved.status === 401) {
+                    let splitWord = recieved.message.message.split(' ').slice(6, 15).join(' ');
+                    setminLength(true)
+                    setError(splitWord)
+                }
+                // // username error
+                else if (recieved.status === 404) {
+                    setError(`Username '${recieved.message.keyValue.username}' already exists!`)
+                    setminLength(true)
+                }
+                else if (recieved.status === 200) {
+                    setsignupPass(true)
+                    setminLength(false)
+                    setregisterSuccess(`Your player Id: ${recieved.id}`)
+
+                }
+
             })
 
     }
@@ -89,8 +105,8 @@ const Signup = ({ setName }) => {
                 </form>
             </StyledLogin>
             <StyledSuccess>
-                {signupPass ? <div><Link to='/'><StartBtn>Thanks for signing up! Click when you're ready to play!</StartBtn></Link></div> : <></>}
-                {minLength ? <div> Error</div> : <></>}
+                {signupPass && <div>{registerSuccess}<div><Link to='/'><StartBtn>Thanks for signing up!Click when you're ready to play!</StartBtn></Link></div></div>}
+                {minLength && <div> {error}</div>}
             </StyledSuccess>
 
 

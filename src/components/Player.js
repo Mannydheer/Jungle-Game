@@ -16,8 +16,10 @@ const Player = () => {
         SetCharacter, character,
         setFireCollision, fireCollision,
         setbananaMovement, bananaMovement,
-        allowFire, setallowFire
+        allowFire, setallowFire,
+        enableBananaBullet
     } = React.useContext(Engine)
+
     const { handleBananaPositions } = React.useContext(TreeContext)
 
     const offset = { top: 0, left: 0 } //controlling png file. 
@@ -174,30 +176,40 @@ const Player = () => {
             }
 
             case 'KeyQ': {
+
                 if (fireCollision) {
                     setstampedeAttack(true);
                 }
+
+
                 break
             }
             case 'KeyE': {
-                //when E is pressed, you are allowed to fire
-                //immediately after set it to false... to not allow fireing until its reset back to true.
-                if (allowFire === true) {
-                    setallowFire(false)
-                    SetCharacter({
-                        ...character,
-                        playerAmmunition: true
-                    });
-                    setbananaPos({
-                        ...bananaPos,
-                        //direction holds the position WHEN E WAS PRESSED. 
-                        direction: facing.current,
-                        bananaLeft: character.left,
-                        bananaTop: character.top
-                    })
+
+
+                // only enable shooting when all bananas have been collected...and when lion appears. 
+                if (enableBananaBullet) {
+
+                    //when E is pressed, you are allowed to fire
+                    //immediately after set it to false... to not allow fireing until its reset back to true.
+
+                    if (allowFire === true) {
+                        setallowFire(false)
+                        SetCharacter({
+                            ...character,
+                            playerAmmunition: true
+                        });
+                        setbananaPos({
+                            ...bananaPos,
+                            //direction holds the position WHEN E WAS PRESSED. 
+                            direction: facing.current,
+                            bananaLeft: character.left,
+                            bananaTop: character.top
+                        })
+
+                    }
 
                 }
-                //left movement
             }
 
         }

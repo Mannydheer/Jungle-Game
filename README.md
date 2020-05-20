@@ -35,9 +35,6 @@ https://jungle-game-aaae7.firebaseapp.com/
 
 ### Flow for user.
 
-`SignUp/Login`
-<img src="Screenshots/Signup.png" alt="Signup">
-
 ## Game
 
 `Game Page.`

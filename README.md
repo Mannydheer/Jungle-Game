@@ -25,11 +25,13 @@ Go to the client directory. Run npm install/yarn install followed by npm start/y
 
 ```
 There are some other components that I did not complete. Possibly in the near future I can work on them.
+
 ```
 
 ## Link to demo.
 
 ```
+
 https://jungle-game-aaae7.firebaseapp.com/
 ```
 

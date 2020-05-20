@@ -23,6 +23,10 @@ These instructions will get you a copy of the project up and running on your loc
 Go to the client directory. Run npm install/yarn install followed by npm start/yarn start. Accept to listen to FE on port 3000
 ```
 
+```
+There are some other components that I did not complete. Possibly in the near future I can work on them.
+```
+
 ## Link to demo.
 
 ```
